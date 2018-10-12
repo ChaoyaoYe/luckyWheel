@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import tools from './tools/tools';
 import './style/App.css';
-
-
-const prizeConfig = [
-    '笔记本','稀有造型','火箭','点卡？','天使甲',
-    '绝版造型','神操作','点卡','加油','鼠标','灰机',
-    '点卡','谢谢惠顾','好棒棒','键盘','小金人','点卡','徽章'
-];
+import prizeConfig from './config/index';
 
 class App extends Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             index: 0,
@@ -18,56 +12,84 @@ class App extends Component {
         };
         this.timerDzp = null; // 大转盘timer
     }
-    componentWillUnmount(){
-        if(this.timerDzp){clearTimeout(this.timerDzp)}
-    }
-    handleProxyStart(){
-        const {running} = this.state;
-        if(!running){
-            this.setState({running:!running}, this.start);
+
+    componentWillUnmount() {
+        if (this.timerDzp) {
+            clearTimeout(this.timerDzp)
         }
     }
-    start(){
+
+    // 决定是否要开始转盘
+    handleProxyStart() {
+        const {index, running} = this.state;
+        if (!running) {
+            const addStep = this.proxyAddStep();
+            this.setState({running: !running}, this.start.bind(this, addStep));
+        }
+    }
+
+    // 控制中奖概率
+    proxyAddStep() {
+        const {index} = this.state;
+        const arr = [];
+        prizeConfig.forEach(item => {
+            if (item.probVal > 0) {
+                for (let i = 0; i < item.probVal; i++) {
+                    arr.push(item.pIndex);
+                }
+            }
+        });
+        const randomVal = tools.randomArr(arr) + (18 - index % 18);
+        const addStep = randomVal + tools.randomNum(5, 10) * 18 + index;
+        return addStep;
+    }
+
+    start(addStep) {
         // 取随机数0~17  +  5~10圈  -- 获得本次要走的步数
         let {index} = this.state;
-        const addStep = tools.randomNum(0,17) + tools.randomNum(5,10)*18 + index;
         // 开启定时器
         const _this = this;
-        function addOneStep(){
+
+        function addOneStep() {
             index += 1;
-            if(index <= addStep){
+            if (index <= addStep) {
                 _this.setState({index});
-                const speed = parseInt((addStep - index)/18);
-                let milliseconds = 1000/30;
-                if(speed === 3){
-                    milliseconds = 1000/15;
+                const speed = parseInt((addStep - index) / 18);
+                let milliseconds = 1000 / 30;
+                if (speed === 3) {
+                    milliseconds = 1000 / 15;
                 }
-                if(speed === 2){
-                    milliseconds = 1000/8;
+                if (speed === 2) {
+                    milliseconds = 1000 / 8;
                 }
-                if(speed <= 1){
-                    milliseconds = 1000/4;
+                if (speed <= 1) {
+                    milliseconds = 1000 / 4;
                 }
                 _this.timerDzp = setTimeout(addOneStep, milliseconds);
-            }else{
+            } else {
                 _this.setState({running: false});
             }
         }
+
         addOneStep();
     }
-    renderPrizeDoms(){
+
+    renderPrizeDoms() {
         const prizeDoms = [];
         const {index} = this.state;
-        for(let i=0;i<=17;i++){
-            if(index%18 === i){
-                prizeDoms.push(<div key={'prize'+i} style={{background:'red',color:'#fff'}}>{prizeConfig[i]}</div>);
-            }else{
-                prizeDoms.push(<div key={'prize'+i}>{prizeConfig[i]}</div>);
+        for (let i = 0; i <= 17; i++) {
+            if (index % 18 === i) {
+                prizeDoms.push(<div key={'prize' + i}
+                                    style={{background: 'red', color: '#fff'}}>{prizeConfig[i].prizeName}</div>);
+            } else {
+                prizeDoms.push(<div key={'prize' + i}>{prizeConfig[i].prizeName}</div>);
             }
         }
         return prizeDoms;
     }
+
     render() {
+        const prizeConfigStr = JSON.stringify(prizeConfig);
         return (
             <div className="App">
                 <div className="bg-wrapper">
@@ -77,6 +99,13 @@ class App extends Component {
                     <section className="prize-wrapper">
                         {this.renderPrizeDoms()}
                     </section>
+                </div>
+                <div style={{textAlign:'center'}}>
+                    <p>中奖概率，请在  src/config/index.js  里面设置</p>
+                    <p>probVal 代表中奖的概率，例如，按照如下设置：</p>
+                    <p>加油、谢谢惠顾  的中奖概率为：100/216</p>
+                    <p>其他的中奖概率都为：1/216</p>
+                    <p>{prizeConfigStr}</p>
                 </div>
             </div>
         );
