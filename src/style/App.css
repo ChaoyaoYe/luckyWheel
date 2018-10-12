@@ -1,0 +1,110 @@
+.bg-wrapper{
+  position: relative;
+  margin: 0 auto;
+  box-sizing: border-box;
+  width: 719px;
+  height: 596px;
+  padding: 41px 40px 37px 48px;
+  background: red;
+  background: url("./imgs/bg.jpg");
+}
+.action-wrapper{
+  position: absolute;
+  left: 156px;
+  top: 146px;
+  width: 420px;
+  height: 308px;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+.prize-wrapper{
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.prize-wrapper>div{
+  position: absolute;
+  width: 98px;
+  height: 98px;
+  border-radius: 5px;
+  background: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+/*第一行奖品*/
+.prize-wrapper>div:nth-child(1),.prize-wrapper>div:nth-child(2),
+ .prize-wrapper>div:nth-child(3),.prize-wrapper>div:nth-child(4),
+ .prize-wrapper>div:nth-child(5),.prize-wrapper>div:nth-child(6){
+   top: 1px;
+ }
+.prize-wrapper>div:nth-child(1){
+  left: 5px;
+}
+.prize-wrapper>div:nth-child(2){
+  left: 108px;
+}
+.prize-wrapper>div:nth-child(3){
+  left: 213px;
+}
+.prize-wrapper>div:nth-child(4){
+  left: 316px;
+}
+.prize-wrapper>div:nth-child(5){
+  left: 421px;
+}
+.prize-wrapper>div:nth-child(6){
+  left: 526px;
+}
+/*最后一行奖品*/
+.prize-wrapper>div:nth-child(10),.prize-wrapper>div:nth-child(11),
+.prize-wrapper>div:nth-child(12),.prize-wrapper>div:nth-child(13),
+.prize-wrapper>div:nth-child(14),.prize-wrapper>div:nth-child(15){
+  top: 417px;
+}
+.prize-wrapper>div:nth-child(15){
+  left: 5px;
+}
+.prize-wrapper>div:nth-child(14){
+  left: 108px;
+}
+.prize-wrapper>div:nth-child(13){
+  left: 213px;
+}
+.prize-wrapper>div:nth-child(12){
+  left: 316px;
+}
+.prize-wrapper>div:nth-child(11){
+  left: 421px;
+}
+.prize-wrapper>div:nth-child(10){
+  left: 526px;
+}
+/*左边一列奖品*/
+.prize-wrapper>div:nth-child(16),.prize-wrapper>div:nth-child(17), .prize-wrapper>div:nth-child(18){
+  left: 5px;
+}
+.prize-wrapper>div:nth-child(18){
+  top: 105px;
+}
+.prize-wrapper>div:nth-child(17){
+  top: 208px;
+}
+.prize-wrapper>div:nth-child(16){
+  top: 312px;
+}
+/*右边一列奖品*/
+.prize-wrapper>div:nth-child(7),.prize-wrapper>div:nth-child(8), .prize-wrapper>div:nth-child(9){
+  left: 526px;
+}
+.prize-wrapper>div:nth-child(7){
+  top: 105px;
+}
+.prize-wrapper>div:nth-child(8){
+  top: 208px;
+}
+.prize-wrapper>div:nth-child(9){
+  top: 312px;
+}
